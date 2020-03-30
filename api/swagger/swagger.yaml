@@ -1,0 +1,157 @@
+info:
+  title: Construção da depressão
+  version: 1.0.0
+consumes:
+  - application/json
+produces:
+  - application/json
+swagger: '2.0'
+securityDefinitions:
+  keystone:
+    description: OpenStack Keycloack Authentication
+    type: apiKey
+    in: header
+    name: x-auth-token
+
+security: []
+
+paths:
+  /auth:
+    get:
+      operationId: List Users
+      summary: List available Use
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+      security:
+        - keystone: []
+    post:
+      operationId: Autenticacao
+      summary: Autenticar Usuario
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+      parameters:
+        - name: User
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      security:
+        - keystone: []
+  /user:
+    post:
+      operationId: CadastroUsuario
+      summary: Cadastra Usuario
+      responses:
+        200:
+          description: Ok
+          schema:
+             $ref: '#/definitions/User'
+      parameters:
+        - name: User
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      security:
+        - keystone: []
+    delete:
+      summary: Deletar Usuario
+      description: Deletar o Usuario
+      responses:
+        200:
+          description: OK
+      parameters:
+        - name: User
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      security:
+        - keystone: []
+    patch:
+      summary: Desabilitar Usuario
+      description: Desabilitar o Usuario
+      responses:
+        200:
+          description: OK
+      parameters:
+        - name: User
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      security:
+        - keystone: []
+    put:
+      summary: Trocar Senha
+      description: Trocar a senha
+      responses:
+        200:
+          description: OK
+      parameters:
+        - name: User
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserNewPassword'
+      security:
+        - keystone: []
+  /sendMessage:
+    post:
+      summary: Envia mensagem
+      description: Envia a mensagem
+      responses:
+        200:
+          description: OK
+      parameters:
+        - name: User
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserWithoutPassword'
+      security:
+        - keystone: []
+        
+
+definitions:
+  User:
+    type: object
+    properties:
+      username:
+        description: name of the user
+        type: string
+      password:
+        description: password of the user
+        type: string
+      email:
+        description: email pf the user
+        type: string
+  UserWithoutPassword:
+    type: object
+    properties:
+      username:
+        description: name of the user
+        type: string
+      email:
+        description: email pf the user
+        type: string
+  UserNewPassword:
+    type: object
+    properties:
+      username:
+        description: name of the user
+        type: string
+      password:
+        description: password of the user
+        type: string
+      newPassword:
+        description: new password of the user
+        type: string
